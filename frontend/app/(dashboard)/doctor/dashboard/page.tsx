@@ -1,10 +1,12 @@
-import React from 'react'
+import DoctorDashboardContent from '@/components/doctor/DoctorDashboardContent'
+import Loader from '@/components/Loader'
+import React, { Suspense } from 'react'
 
 function page() {
   return (
-    <div>
-      
-    </div>
+    <Suspense fallback={<Loader />}>
+      <DoctorDashboardContent />
+    </Suspense>
   )
 }
 

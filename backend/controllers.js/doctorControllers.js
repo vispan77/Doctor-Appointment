@@ -78,10 +78,11 @@ const doctorProfile = async (req, res) => {
 const updateDoctorprofile = async (req, res) => {
     try {
         const update = { ...req.body }
+        console.log(update);
         delete update.password;
         update.isVerified = true;  //mark profile verified on update 
 
-        const doctor = await Doctor.findByIdAndUpdate(req.user._id, update, { new: true }).select("-passowrd -googleId");
+        const doctor = await Doctor.findByIdAndUpdate(req.user._id, update, { new: true }).select("-password -googleId");
 
         res.ok(doctor, "Doctor Profile Updated");
 

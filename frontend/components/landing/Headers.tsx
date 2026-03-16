@@ -1,8 +1,8 @@
 "use client"
 
-import { Bell, Calendar, Settings, Stethoscope, User } from 'lucide-react';
+import { Bell, Calendar, LogOut, Settings, Stethoscope, User } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import React from 'react'
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -33,11 +33,9 @@ function Headers({ showDashboardNav = false }: HeadersProp) {
 
     // const isAuthenticated = false;
 
-    const {user, isAuthenticated} = userAuthStore();
+    const { user, isAuthenticated, logout } = userAuthStore();
 
     const pathname = usePathname();
-
-    
 
     const getDashboardNavigation = (): NavigationItem[] => {
         if (!user || !showDashboardNav) {
@@ -212,7 +210,7 @@ function Headers({ showDashboardNav = false }: HeadersProp) {
                                         </Link>
                                     </DropdownMenuItem>
 
-                                    
+
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -237,7 +235,6 @@ function Headers({ showDashboardNav = false }: HeadersProp) {
                                             className="hidden md:block"
                                         >
                                             <Button
-                                                
                                                 className='bg-gradient-to-r from-blue-600
                                                  to-blue-700  font-medium hover:from-blue-700
                                                   hover:to-blue-800 rounded-full px-6'
