@@ -47,7 +47,7 @@ function LandingHero() {
                 <div className='flex flex-col sm:flex-row gap-4 justify-center mb-12'>
                     <Button
                         size='lg'
-                        onClick={() => handleBookConsultation}
+                        onClick={() => handleBookConsultation()}
                         className='bg-gradient-to-r from-blue-600 to-blue-700 
                      hover:from-blue-700 hover:to-blue-800 rounded-full px-8 py-3 text-lg'
                     >

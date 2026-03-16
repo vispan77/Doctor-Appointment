@@ -161,7 +161,7 @@ function Headers({ showDashboardNav = false }: HeadersProp) {
 
                                 <DropdownMenuContent align='end' className='w-56'>
                                     <DropdownMenuLabel>
-                                        <div className='felx items-center space-x-2'>
+                                        <div className='flex items-center space-x-2'>
                                             <Avatar className='w-10 h-10'>
                                                 <AvatarImage
                                                     src={user?.profileImage}
