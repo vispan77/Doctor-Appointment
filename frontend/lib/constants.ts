@@ -201,4 +201,6 @@ export const contactInfo = [
   { name: "instagram", icon: Instagram, url: "https://instagram.com/medicare-plus"},
 ]
 
+export  const cities = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad', 'Pune', 'Ahmedabad'];
+
 

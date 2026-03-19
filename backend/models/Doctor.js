@@ -68,7 +68,8 @@ const doctorSchema = new mongoose.Schema({
     },
     slotDurationMinutes: { type: Number, default: 30 },
 
-    isVerified: { type: Boolean, default: false }
+    isVerified: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: true },
 
 }, { timestamps: true })
 

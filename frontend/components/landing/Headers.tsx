@@ -254,7 +254,7 @@ function Headers({ showDashboardNav = false }: HeadersProp) {
 
                                         <Link href={`/${user?.type}/dashboard`}>
                                             <Button
-                                                variant="ghost"
+                                                variant="outline"
                                                 className='text-blue-900 font-medium
                                                  hover:text-blue-700'
                                             >

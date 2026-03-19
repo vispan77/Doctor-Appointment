@@ -12,6 +12,7 @@ const doctorRouter = require("./Routes/doctorRouter");
 const patientRouter = require("./Routes/patientRouter");
 const passportLib = require("passport");
 const passport = require('./config/passport');
+const appointmentRouter = require("./Routes/appointmentRouter");
 
 
 
@@ -44,6 +45,7 @@ app.use(passportLib.initialize());
 app.use("/api/auth", authRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/patient", patientRouter);
+app.use("/api/appointment", appointmentRouter);
 
 
 
