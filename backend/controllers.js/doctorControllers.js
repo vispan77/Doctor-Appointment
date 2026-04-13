@@ -92,5 +92,23 @@ const updateDoctorprofile = async (req, res) => {
 }
 
 
+const getDoctorById = async (req, res) => {
+    try {
+        const { doctorId } = req.params;
+        const doctor = await Doctor.findById(doctorId)
+            .select("-password -googleId")
+            .lean();
 
-module.exports = { doctorList, doctorProfile, updateDoctorprofile }
+        if (!doctor) {
+            return res.notFound("Doctor not found");
+        }
+        res.ok(doctor, "doctor details fetched successfully");
+
+    } catch (error) {
+        res.serverError("Fetching doctor failed", [error.message]);
+    }
+}
+
+
+
+module.exports = { doctorList, doctorProfile, updateDoctorprofile, getDoctorById }
