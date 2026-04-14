@@ -1,7 +1,7 @@
 const express = require("express");
 const { query, body } = require("express-validator");
 const validate = require("../middleware/validate");
-const { doctorList, doctorProfile, updateDoctorprofile, getDoctorById } = require("../controllers.js/doctorControllers");
+const { doctorList, doctorProfile, updateDoctorprofile, getDoctorById, doctorDashboard } = require("../controllers.js/doctorControllers");
 const { protected, requireRole } = require("../middleware/auth")
 const doctorRouter = express.Router();
 
@@ -51,6 +51,10 @@ doctorRouter.put("/onboarding/update", protected, requireRole("doctor"),
 
 //get the doctor deatiail by id
 doctorRouter.get("/:doctorId", protected, getDoctorById);
+
+
+//doctore dashboard
+doctorRouter.get("/dashboard", protected, requireRole("doctor"), doctorDashboard)
 
 
 module.exports = doctorRouter;

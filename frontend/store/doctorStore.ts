@@ -22,7 +22,7 @@ interface DoctorState {
     //Api Action
     fetchDoctors: (filters: DoctorFilters) => Promise<void>;
     fetchDoctorById: (id: string) => Promise<void>;
-    // fetchDashboard: (period?: string) => Promise<void>
+    fetchDashboard: (period?: string) => Promise<void>
 }
 
 export const useDoctorStore = create<DoctorState>((set, get) => ({
@@ -80,6 +80,20 @@ export const useDoctorStore = create<DoctorState>((set, get) => ({
             set({ loading: false })
         }
 
-    }
+    },
+
+    fetchDashboard: async () => {
+        set({ loading: true, error: null });
+        try {
+            const response = await getWithAuth('/doctor/dashboard');
+            set({ dashboard: response.data });
+        } catch (error: any) {
+            set({ error: error.message });
+        } finally {
+            set({ loading: false, error: null });
+        }
+    },
+
+
 
 }))

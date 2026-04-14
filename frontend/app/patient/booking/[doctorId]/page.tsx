@@ -1,7 +1,10 @@
 "use client"
+import { Button } from '@/components/ui/button';
 import { convertTo24Hour, minutesToTime, toLocalYMD } from '@/lib/dateUtils';
 import { useAppointmentStore } from '@/store/appointmentStore';
 import { useDoctorStore } from '@/store/doctorStore';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -176,8 +179,33 @@ function page() {
     console.log("this is my current doctor", currentDoctor);
 
     return (
-        <div>
-            BOOKING PAGE
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+            <div className="bg-white border-b shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 py-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                            <Link href="/doctor-list">
+                                <Button variant="ghost" size="sm" className="text-gray-600">
+                                    <ArrowLeft className="w-4 h-4 mr-2" />
+                                    Back to Doctor
+                                </Button>
+                            </Link>
+
+                            <div className="h-6 w-px bg-gray-200"></div>
+
+                            <div>
+                                <h1 className="text-sm md:text-2xl font-bold text-gray-900">
+                                    Book Appointment
+                                </h1>
+                                <p className="text-xs md:text-sm text-gray-600">
+                                    with Dr. {currentDoctor.name}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     )
 }

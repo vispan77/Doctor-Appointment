@@ -1,4 +1,6 @@
+const Appointment = require("../models/Appointment");
 const Doctor = require("../models/Doctor");
+const Patient = require("../models/Patient");
 
 const doctorList = async (req, res) => {
     try {
@@ -111,4 +113,122 @@ const getDoctorById = async (req, res) => {
 
 
 
-module.exports = { doctorList, doctorProfile, updateDoctorprofile, getDoctorById }
+//controller for doctor dashboard
+const doctorDashboard = async (req, res) => {
+    try {
+        const doctorId = req.auth.id;
+        const now = new Date();
+
+        //Proper date range calculation
+        const startOfDay = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            0,
+            0,
+            0,
+            0
+        );
+        const endOfDay = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            23,
+            59,
+            59,
+            999
+        );
+
+        const doctor = await Doctor.findById(doctorId)
+            .select("-password -googleId")
+            .lean();
+
+        if (!doctor) {
+            return res.notFound("Doctor not found");
+        }
+
+        //Today's appointment with full population
+        const todayAppointments = await Appointment.find({
+            doctorId,
+            slotStartIso: { $gte: startOfDay, $lte: endOfDay },
+            status: { $ne: "Cancelled" },
+        })
+            .populate("patientId", "name profileImage age email phone")
+            .populate("doctorId", "name fees profileImage specialization")
+            .sort({ slotStartIso: 1 });
+
+
+        //upcoming appointment with full population
+        const upcomingAppointments = await Appointment.find({
+            doctorId,
+            slotStartIso: { $gt: endOfDay },
+            status: { $ne: "Cancelled" },
+        })
+            .populate("patientId", "name profileImage age email phone")
+            .populate("doctorId", "name fees profileImage specialization")
+            .sort({ slotStartIso: 1 })
+            .limit(5);
+
+        const uniquePatientIds = await Appointment.distinct("patientId", {
+            doctorId,
+        });
+        const totalPatients = uniquePatientIds.length;
+
+        const completedAppointmentCount = await Appointment.countDocuments({
+            doctorId,
+            status: "Completed",
+        });
+
+        const totalAppointment = await Appointment.find({
+            doctorId,
+            status: "Completed",
+        });
+
+        const totalRevenue = totalAppointment.reduce(
+            (sum, apt) => sum + (apt.fees || doctor.fees || 0),
+            0
+        );
+
+        const dashboardData = {
+            user: {
+                name: doctor.name,
+                fees: doctor.fees,
+                profileImage: doctor.profileImage,
+                specialization: doctor.specialization,
+                hospitalInfo: doctor.hospitalInfo,
+            },
+            stats: {
+                totalPatients,
+                todayAppointments: todayAppointments.length,
+                totalRevenue,
+                completedAppointments: completedAppointmentCount,
+                averageRating: 4.8,
+            },
+            todayAppointments,
+            upcomingAppointments,
+            performance: {
+                pateintSatisfaction: 4.8,
+                completionRate: 98,
+                responseTime: "< 2min",
+            },
+        };
+
+        res.ok(dashboardData, 'Dashboard data retrived')
+
+    } catch (error) {
+
+        console.error("Dashboard error", error);
+        res.serverError("failed to fetch doctor dashboard", [error.message]);
+
+    }
+}
+
+
+
+module.exports = {
+    doctorList,
+    doctorProfile,
+    updateDoctorprofile,
+    getDoctorById,
+    doctorDashboard
+}
