@@ -267,7 +267,18 @@ function page() {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 exit={{ opacity: 0, x: -20 }}
                                             >
-                                                <CalendarStep />
+                                                <CalendarStep
+                                                    selectedDate={selectedDate}
+                                                    setSelectedDate={setSelectedDate}
+                                                    selectedSlot={selectedSlot}
+                                                    setSelectedSlot={setSelectedSlot}
+                                                    availableSlots={availableSlots}
+                                                    availableDates={availableDates}
+                                                    excludedWeekdays={currentDoctor?.availabilityRange?.excludedWeekdays || []}
+                                                    bookedSlots={bookedSlots}
+                                                    onContinue={() => setCurrentStep(2)}
+
+                                                />
 
                                             </motion.div>
                                         )
